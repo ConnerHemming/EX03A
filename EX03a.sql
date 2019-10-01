@@ -1,52 +1,87 @@
-# EX03A
--CREATE  TABLE DEPARTMENT (
-    DepartmentName  Char(35)    PRIMARY KEY,
-    BudgetCode      Char(30)    NOT NULL,
-    OfficeNumber    Char(15)    NOT NULL,
-    DepartmentPhone Char(12)    NOT NULL,
-    );
-
-CREATE  TABLE Employee (
-    EmployeeNumber  Int             PRIMARY KEY,
-    FirstName       Char(25)        NOT NULL,
-    LastName        Char(25)        NOT NULL,
-    Department      Char(35)        NOT NULL, DEFAULT "Human Resources",
-    Position        Char(35)        NULL,
-    Supervisor      Int             NULL,
-    OfficePhone     Char(12)        NULL,
-    EmailAddress    VarChar(100)    NULL,
-    CONSTRAINT      EMPLOYEE_PK     PRIMARY KEY (EmployeeNumber),
-    CONSTRAINT      EMP_DEPART_FK   FOREIGN KEY (Department)
-                        REFERENCES DEPARTMENT (DepartmentName)
-                            ON UPDATE CASCADE,
-    CONSTRAINT      EMP_SUPER_FK    FOREIGN KEY (Supervisor)
-                        REFERENCES EMPLOYEE (EmployeeNumber)
-);
-
-CREATE TABLE Project (projectid)
-    projectid       Int             NOT NULL IDENTITY (1000, 100),
-    ProjectName     Char(50)        NOT NULL,
-    Department      Char(35)        NOT NULL,
-    MaxHours        numeric(8,2)    NOT NULL DEFAULT 100,
-    StartDate       Date            NULL,
-    EndDate         Date            NULL,
-    CONSTRAINT      PROJECT_PK      PRIMARY KAY (projectid),
-    CONSTRAINT      PROJ_DEPART_PK  FOREIGN KEY (DepartmentName)
-                            REFERENCES Department (DepartmentName)
-                                ON UPDATE CASCADE
-);
-
-CREATE TABLE Assignment (assignmentid) 
-    projectid       Int             NOT NULL,
-    EmployeeNumber  Int             NOT NULL,
-    hoursworked     numeric(6,2)    NULL,
-    CONSTRAINT      ASSIGNMENT_PK   PRIMARY KEY (projectid, EmployeeNumber),
-    CONSTRAINT      ASSIGN_PROJ_FK  FOREIGN KEY (projectid)
-                     REFRENCES PROJECT (projectid)
-                            ON UPDATE NO ACTION
-                            ON DELETE CASCADE,
-    CONSTRAINT      ASSIGN_EMP_FK   FOREIGN KEY (EmployeeNumber)
-                        REFERENCES EMPLOYEE (EmployeeNumber)
-                            ON UPDATE NO ACTION
-                            ON DELETE NO ACTION
-);
+-- phpMyAdmin SQL Dump
+-- version 4.9.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Generation Time: Oct 01, 2019 at 06:51 AM
+-- Server version: 10.4.6-MariaDB
+-- PHP Version: 7.3.9
+ 
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+ 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+ 
+--
+-- Database: `wedgewood pacific`
+--
+ 
+-- --------------------------------------------------------
+ 
+--
+-- Table structure for table `department`
+--
+ 
+CREATE TABLE `department` (
+  `DepartmentName` char(35) NOT NULL DEFAULT 'PRIMARY KEY',
+  `BudgetCode` char(30) NOT NULL,
+  `OfficeNumber` char(15) NOT NULL,
+  `DepartmentPhone` char(12) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ 
+--
+-- Dumping data for table `department`
+--
+ 
+INSERT INTO `department` (`DepartmentName`, `BudgetCode`, `OfficeNumber`, `DepartmentPhone`) VALUES
+('PRIMARY KEY', '', '', ''),
+('Administration', 'BC-100-10', 'BLDG10-210', '360-285-8100'),
+('PRIMARY KEY', '', '', ''),
+('Finance', 'BC-400-10', 'BLDG01-110', '360-285-8400'),
+('PRIMARY KEY', '', '', ''),
+('Sales and Marketing', 'BC600-10', 'BLDG01-250', '360-285-8500');
+ 
+-- --------------------------------------------------------
+ 
+--
+-- Table structure for table `Employee`
+--
+ 
+CREATE TABLE `Employee` (
+  `EmployeeNumber` int(11) NOT NULL,
+  `FirstName` char(25) NOT NULL,
+  `LastName` char(25) NOT NULL,
+  `Department` char(35) NOT NULL,
+  `Position` char(35) DEFAULT NULL,
+  `Supervisor` int(11) DEFAULT NULL,
+  `OfficePhone` char(12) DEFAULT NULL,
+  `EmailAddress` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ 
+--
+-- Dumping data for table `Employee`
+--
+ 
+INSERT INTO `Employee` (`EmployeeNumber`, `FirstName`, `LastName`, `Department`, `Position`, `Supervisor`, `OfficePhone`, `EmailAddress`) VALUES
+(1, 'Mary', 'Jacobs', 'Administration', 'CEO', 0, '360-285-8110', 'Mary.Jacobs@WP.com'),
+(5, 'Alan', 'Adams', 'Humsn Resources', 'HR1', 4, '360-285-8320', 'Alan.Adams@WP.com'),
+(16, 'Mary', 'Smith', 'Production', 'OPS3', 1, '360-285-8810', 'Mary.Smith@WP.com');
+ 
+--
+-- Indexes for dumped tables
+--
+ 
+--
+-- Indexes for table `department`
+--
+ALTER TABLE `department` ADD FULLTEXT KEY `DepartmentName` (`DepartmentName`);
+COMMIT;
+ 
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
